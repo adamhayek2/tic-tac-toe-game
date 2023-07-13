@@ -41,7 +41,8 @@ p{
 }
 .tile{
    border: 2px solid hsl(var(--text));
-   background-color:sl(var(--bkg)); 
+   background-color: hsl(var(--bkg)); 
+   color: hsl(var(--accent));
    border-radius: 0.5rem;
    cursor: pointer;
    place-items: center;
