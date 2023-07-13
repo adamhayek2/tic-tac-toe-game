@@ -27,8 +27,8 @@ gameBoard.addEventListener("mouseenter", handleMouseEnter);
 const allTiles = gameBoard.querySelectorAll(".tile");
 allTiles.forEach((t) => {
     t.addEventListener("mouseenter", handleMouseEnter);
-    t.addEventListener("mouseleave", handleMouseLeave);
-    });
+    t.addEventListener("mouseleave", handleMouseLeave);});
+    gameBoard.removeAttribute("inert", true);
 }
 
 
@@ -54,12 +54,13 @@ function restartGame() {
   }
 
 
-function showCongrats(){
+  function showCongrats() {
     info.textContent = `${turn} wins!`;
     gameBoard.removeEventListener("click", handleGameboardClick);
     gameBoard.setAttribute("inert", true);
-    setTimeOut(restartGame, 1000);
-}
+    
+    setTimeout(restartGame, 1000);
+  }
 
 
 function checkScore() {
