@@ -49,3 +49,9 @@ p{
    font-size: clamp(2rem, calc(10vw + 1rem), 10rem);
    aspect-ratio: 1/1;
 }
+.tile[data-value="X"]::before{
+    content: "X";
+}
+.tile[data-value="O"]::before{
+    content: "O";
+}
