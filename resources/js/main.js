@@ -22,11 +22,24 @@ const tileGrid = emptyTiles.map((t) => '<button class="tile"></button>').join(""
 gameBoard.innerHTML = tileGrid;
 turn = "X";
 info.textContent = `${turn}s turn`;
-gameBoard.addEventListener("click", handleGameboardClick)
+gameBoard.addEventListener("click", handleGameboardClick);
+gameBoard.addEventListener("mouseenter", handleMouseEnter);
+const allTiles = gameBoard.querySelectorAll(".tile");
+allTiles.forEach((t) => {
+    t.addEventListener("mouseenter", handleMouseEnter);
+    t.addEventListener("mouseleave", handleMouseLeave);
+    });
 }
 
 
 createGameboard();
+
+
+function showCongrats(){
+    info.textContent = `${turn} wins!`;
+    gameBoard.removeEventListener("click", handleGameboardClick);
+}
+
 
 function updateTurn() {
     turn = turn === "X" ? "O" : "X";
@@ -40,7 +53,7 @@ function checkScore(){
         return (tilesValues[a] && tilesValues[a] === tilesValues[b] && tilesValues[b] === tilesValues[c]);
     });
     if(isWinner){
-        return alert("you won!");
+        return showCongrats();
     }
     updateTurn();
 }
@@ -50,9 +63,22 @@ function handleGameboardClick(e){
     const valueExist = e.target.dataset.value;
     if(!valueExist){
         e.target.dataset.value = turn;
+        e.target.style.setProperty("--hue", turn === "X" ? 10 :200);
         checkScore();
     }
 
 }
 
 
+function handleMouseEnter(e) {
+    const valueExist = e.target.dataset.value;
+    if(!valueExist) {
+        e.target.dataset.hover = turn;
+        e.target.style.setProperty("--hue", turn === "X" ? 10: 200);
+    }
+}
+
+
+function handleMouseLeave(e) {
+    e.target.dataset.hover = "";
+}
