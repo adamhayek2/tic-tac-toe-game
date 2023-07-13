@@ -34,51 +34,70 @@ allTiles.forEach((t) => {
 
 createGameboard();
 
-
-function showCongrats(){
-    info.textContent = `${turn} wins!`;
-    gameBoard.removeEventListener("click", handleGameboardClick);
-}
-
-
 function updateTurn() {
     turn = turn === "X" ? "O" : "X";
     info.textContent = `${turn}s turn`;
 }
-function checkScore(){
+
+function restartGame() {
+    let seconds = 3;
+    const timer = setInterval(() => {
+      info.textContent = `Restarting in ${seconds}…`;
+      seconds--;
+      if (seconds < 0) {
+        // clear the interval
+        clearInterval(timer);
+        // restart game
+        createGameboard();
+      }
+    }, 1000);
+  }
+
+
+function showCongrats(){
+    info.textContent = `${turn} wins!`;
+    gameBoard.removeEventListener("click", handleGameboardClick);
+    gameBoard.setAttribute("inert", true);
+    setTimeOut(restartGame, 1000);
+}
+
+
+function checkScore() {
     const allTiles = [...document.querySelectorAll(".tile")];
-    const tilesValues = allTiles.map((t) => t.dataset.value);
+    const tileValues = allTiles.map((t) => t.dataset.value);
     const isWinner = winningCombos.some((combo) => {
-        const [a, b, c] = combo;
-        return (tilesValues[a] && tilesValues[a] === tilesValues[b] && tilesValues[b] === tilesValues[c]);
+      const [a, b, c] = combo;
+      return (
+        tileValues[a] &&
+        tileValues[a] === tileValues[b] &&
+        tileValues[a] === tileValues[c]
+      );
     });
-    if(isWinner){
-        return showCongrats();
+    if (isWinner) {
+      return showCongrats();
     }
     updateTurn();
-}
+  }
 
-
-function handleGameboardClick(e){
-    const valueExist = e.target.dataset.value;
-    if(!valueExist){
-        e.target.dataset.value = turn;
-        e.target.style.setProperty("--hue", turn === "X" ? 10 :200);
-        checkScore();
+  function handleGameboardClick(e) {
+    const valueExists = e.target.dataset.value;
+    if (!valueExists) {
+      e.target.dataset.value = turn;
+      e.target.style.setProperty("--hue", turn === "X" ? 10 : 200);
+      checkScore();
     }
+  }
+  
 
-}
 
-
-function handleMouseEnter(e) {
-    const valueExist = e.target.dataset.value;
-    if(!valueExist) {
-        e.target.dataset.hover = turn;
-        e.target.style.setProperty("--hue", turn === "X" ? 10: 200);
+  function handleMouseEnter(e) {
+    const valueExists = e.target.dataset.value;
+    if (!valueExists) {
+      e.target.dataset.hover = turn;
+      e.target.style.setProperty("--hue", turn === "X" ? 10 : 200);
     }
-}
-
-
-function handleMouseLeave(e) {
+  }
+  
+  function handleMouseLeave(e) {
     e.target.dataset.hover = "";
-}
+  }
