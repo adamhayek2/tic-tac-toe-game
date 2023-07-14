@@ -2,6 +2,11 @@ const gameBoard = document.querySelector("#board");
 const info = document.querySelector("#info");
 let turn;
 
+const xwins = document.getElementById("xwins");
+const owins = document.getElementById("owins");
+let xWinScore = 0;
+let oWinScore = 0;
+
 const winningCombos = [
     [0,1,2],
     [3,4,5],
@@ -39,6 +44,19 @@ function updateTurn() {
     info.textContent = `${turn}s turn`;
 }
 
+function updateScore(){
+    if (info.textContent === `X wins!`){
+        xWinScore++;
+        xwins.textContent = `X wins: ${xWinScore}`;
+        
+    }else if(info.textContent === `O wins!`){
+        oWinScore++;
+        owins.textContent = `O wins: ${oWinScore}`;
+        console.log(oWinScore)
+    }
+    
+}
+
 function restartGame() {
     let seconds = 3;
     const timer = setInterval(() => {
@@ -58,8 +76,9 @@ function restartGame() {
     info.textContent = `${turn} wins!`;
     gameBoard.removeEventListener("click", handleGameboardClick);
     gameBoard.setAttribute("inert", true);
-    
+    updateScore();
     setTimeout(restartGame, 1000);
+    
   }
 
 
@@ -78,6 +97,7 @@ function checkScore() {
       return showCongrats();
     }
     updateTurn();
+    
   }
 
   function handleGameboardClick(e) {

@@ -78,3 +78,11 @@ p {
   content: attr(data-value);
   opacity: 1;
 }
+.scores{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+#owins{
+    background-color: hsl(var(--hue) 60% 50%);
+}
